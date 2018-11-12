@@ -1,0 +1,35 @@
+<form [formGroup]="bookForm">
+    <div class="row">
+        <div class="col-6">
+            <div class="form-group">
+                <label for={{FORM_PARAMS.TITLE}}>Title</label>
+                <input type="text" formControlName={{FORM_PARAMS.TITLE}}  class="form-control" id={{FORM_PARAMS.TITLE}} placeholder="Title...">
+            </div>
+            <div class="form-group">
+                <label for={{FORM_PARAMS.AUTHOR}}>Author</label>
+                <input formControlName={{FORM_PARAMS.AUTHOR}} type="text" class="form-control" id={{FORM_PARAMS.AUTHOR}} placeholder="Author...">
+            </div>
+            <div class="form-group">
+                <label for={{FORM_PARAMS.PAGES}}>Pages</label>
+                <input formControlName={{FORM_PARAMS.PAGES}} type="number" class="form-control" id={{FORM_PARAMS.PAGES}} placeholder="Pages...">
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName={{FORM_PARAMS.READED}} value="" id={{FORM_PARAMS.READED}} >
+                <label class="form-check-label" for="readed">
+                    Did you read this book?
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName={{FORM_PARAMS.FAVOURITE}} value="" id={{FORM_PARAMS.FAVOURITE}}>
+                <label class="form-check-label" for="favourite">
+                    Add to favourite?
+                </label>
+                </div>
+            <button type="submit" (click)="onSubmit()" class="btn btn-primary">Save</button>
+            <button type="submit" (click)="onDelete(currentBook._id)" class="btn btn-danger">Delete</button>
+        </div>
+        <div class="col-6">
+            Image input
+        </div> 
+    </div>
+</form>
