@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BookFormService } from '../../services/book-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FORM_PARAMS } from 'shared/variables/bookFormParams';
 import { Book } from 'shared/interfaces/book.interface';
+import { FilePickerDirective, ReadFile } from 'ngx-file-helpers';
 
 @Component({
   selector: 'app-book-form',
@@ -11,6 +12,9 @@ import { Book } from 'shared/interfaces/book.interface';
   styleUrls: ['./book-form.component.scss']
 })
 export class BookFormComponent implements OnInit {
+  @ViewChild('myFilePicker')
+  private filePicker: FilePickerDirective;
+  public picked: ReadFile;
   private bookForm: FormGroup;
   public currentBook: Book;
   public FORM_PARAMS = FORM_PARAMS;
@@ -18,13 +22,13 @@ export class BookFormComponent implements OnInit {
   constructor(
     private bookFormService: BookFormService,
     private route: ActivatedRoute,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.bookForm = this.bookFormService.createForm();
     this.route.params.subscribe(params => {
-      if(params.id){
+      if (params.id) {
         this.isEditMode = true;
         this.bookFormService.getBookById(params.id).subscribe((book: Book) => {
           this.currentBook = book;
@@ -35,25 +39,41 @@ export class BookFormComponent implements OnInit {
             [FORM_PARAMS.PAGES]: book.pages,
             [FORM_PARAMS.READED]: book.readed,
             [FORM_PARAMS.IMAGE]: book.image,
-            [FORM_PARAMS.FAVOURITE]: book.favourite,
-          })
+            [FORM_PARAMS.FAVOURITE]: book.favourite
+          });
         });
       }
     });
   }
 
   onDelete(id: number): void {
-    this.bookFormService.deleteBookById(id).subscribe(() => this.router.navigate(['/main']));
+    this.bookFormService
+      .deleteBookById(id)
+      .subscribe(() => this.router.navigate(['/main']));
+  }
+
+  onFilePicked(file: ReadFile): void {
+    this.picked = file;
+  }
+
+  onFileChange(event): void {
+    this.bookForm.patchValue({
+      [FORM_PARAMS.IMAGE]: event.target.files[0]
+    });
   }
 
   onSubmit(): void {
-    if(this.bookForm.valid) {
-      if(this.isEditMode){
-        this.bookFormService.updateBookById(this.bookForm.value).subscribe(el => this.router.navigate(['/main']));
+    console.log(this.bookForm.value);
+    if (this.bookForm.valid) {
+      if (this.isEditMode) {
+        this.bookFormService
+          .updateBookById(this.bookForm.value)
+          .subscribe(el => this.router.navigate(['/main']));
       } else {
-        this.bookFormService.createBook(this.bookForm.value).subscribe(el => this.router.navigate(['/main']));
+        this.bookFormService
+          .createBook(this.bookForm.value)
+          .subscribe(el => this.router.navigate(['/main']));
       }
     }
   }
-
 }

@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BookFormRoutingModule } from './book-form-routing.module';
 import { BookFormComponent } from './containers/book-form/book-form.component';
 import { BookFormService } from './services/book-form.service';
+import { FileHelpersModule } from 'ngx-file-helpers';
 
 @NgModule({
   imports: [
@@ -13,8 +14,9 @@ import { BookFormService } from './services/book-form.service';
     BookFormRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FileHelpersModule
   ],
   declarations: [BookFormComponent],
-  providers: [BookFormService],
+  providers: [BookFormService]
 })
-export class BookFormModule { }
+export class BookFormModule {}
